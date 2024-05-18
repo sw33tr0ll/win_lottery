@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from requests_html import HTMLSession
 import csv
 from collections import Counter
@@ -18,7 +20,7 @@ def fetch_and_save_powerball_data():
             drawdate = archive_box.attrs['href'].split('/')[2]
             balls = [ball.text for ball in archive_box.find('.ball')]
             powerball = archive_box.find('.powerball', first=True).text
-            
+
             csv_writer.writerow([drawdate, *balls, powerball])
 
     csv_file.close()
@@ -33,7 +35,7 @@ def find_top_numbers(data, n=3):
     numbers = []
     for row in data:
         numbers.extend([int(row['ball1']), int(row['ball2']), int(row['ball3']), int(row['ball4']), int(row['ball5'])])
-    
+
     number_counts = Counter(numbers)
     top_numbers = [num for num, count in number_counts.most_common(n)]
     return top_numbers
@@ -49,13 +51,13 @@ def generate_sequence(top_numbers):
 
 def generate_recommended_sequences(data, top_numbers, num_sequences=10):
     historical_sequences = set(tuple(sorted([int(row['ball1']), int(row['ball2']), int(row['ball3']), int(row['ball4']), int(row['ball5'])])) for row in data)
-    
+
     recommended_sequences = set()
     while len(recommended_sequences) < num_sequences:
         sequence = generate_sequence(top_numbers)
         if sequence not in historical_sequences:
             recommended_sequences.add(sequence)
-    
+
     return recommended_sequences
 
 def main():
