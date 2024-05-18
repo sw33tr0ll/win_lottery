@@ -3,7 +3,7 @@
 ### How to use:
 
 1. `git clone https://github.com/sw33tr0ll/win_lottery`
-2. `source venv/bin/activate`
+2. `pip install -r requirements.txt`
 3. `python win_lottery.py`
 
 ### How it Works: 
